@@ -4,7 +4,33 @@ from config import config
 
 
 
-def getGroupsDictionary(accessToken, max=None):
+def getGroupMembers(groupId):
+	group = getGroup(groupId)
+	members = group['members']
+	return members
+
+
+def getGroupMembersNameList(groupId):
+	members = getGroupMembers(groupId)
+	membersList = []
+	for member in members:
+		membersList.append(member['nickname'])
+	
+	return membersList
+
+
+def getGroup(groupId):
+	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '?token=' + config['accessToken'])
+	group = r.json()['response']
+	return group
+
+
+
+
+
+
+
+def getGroupsDictionary(max=None):
 	if(max is not None):
 		parameters = {'per_page' : max}
 	else:
@@ -17,7 +43,7 @@ def getGroupsDictionary(accessToken, max=None):
 	return groupList
 
 
-def getGroups(accessToken, max=None):
+def getGroups(max=None):
 	if(max is not None):
 		parameters = {'per_page' : max}
 	else:
@@ -27,9 +53,5 @@ def getGroups(accessToken, max=None):
 	return groups
 
 
-def getGroup(accessToken, id):
-	r = requests.get('https://api.groupme.com/v3/groups/' + str(id) + '?token=' + config['accessToken'])
-	group = r.json()['response']
-	return group
 
-print getGroup(config['accessToken'], 30425709)
+print getGroupMembersNameList(30425709)

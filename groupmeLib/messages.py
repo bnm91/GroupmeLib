@@ -3,11 +3,13 @@ import requests
 from config import config
 
 
-#TODO: find a better way to handle access token
 #TODO: add handling for no response/bad response etc
+#TODO: rename this package.  Messages begs to become overloaded when this module is used elsewhere
 
 
-
+#TODO implement
+def getGroupId(groupName):
+	return 1
 
 def getGroupMessageCount(groupId):
 	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'])
@@ -17,10 +19,26 @@ def getGroupMessageCount(groupId):
 
 
 #TODO: implement
-def getPreviousMessage(messageId):
+def getPreviousMessage(groupId, messageId):
 	return 1
 
 
+#TODO: implement
+def getMessage(groupId, messageId):
+	return 1
+
+
+#TODO implement
+def getAllMessagesByUser(userId):
+	return 1
+
+
+#TODO implement
+def getAllMessagesInTimeRange(beginTime, endTime):
+	return 1
+
+
+#TODO: add some sort % complete output
 def getAllGroupMessages(groupId):
 	parameters = {'limit' : 100}
 	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'], params=parameters)
@@ -29,12 +47,15 @@ def getAllGroupMessages(groupId):
 	messages = response['messages']
 	retrievedMessageCount = len(messages)
 
-	while(retrievedMessageCount <= totalGroupMessageCount):
+	while(retrievedMessageCount < totalGroupMessageCount):
+		if(retrievedMessageCount % 100 != 0): #this is because in some cases groupmes count seems to be wrong.  this prevents it from crashing in the end.  #TODO:rework this 
+			break
 		before_id = messages[len(messages) -1]['id']
-		print before_id
 		parameters['before_id'] = before_id
-		messages += getGroupMessages(groupId, parameters)
-		retrievedMessageCount += len(messages)
+		retrievedMessages = getGroupMessages(groupId, parameters)
+		messages += retrievedMessages
+		retrievedMessageCount += len(retrievedMessages)
+		print str(retrievedMessageCount) + ' ' + str(before_id)
 
 	return messages
 
@@ -65,4 +86,4 @@ def getGroupMessages(groupId, inputParameters):
 
 
 
-print getAllGroupMessages(30425709)
+# print getAllGroupMessages(30425709)
