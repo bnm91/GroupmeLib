@@ -1,1 +1,5 @@
-accessToken = 'yourtokenhere'
+
+
+config = {
+    'accessToken' : 'yourOwnTokenHere'
+}

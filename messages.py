@@ -1,6 +1,6 @@
 import json
 import requests
-from config import accessToken
+from config import config
 
 
 #TODO: find a better way to handle access token
@@ -10,7 +10,7 @@ from config import accessToken
 
 
 def getGroupMessageCount(groupId):
-	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + accessToken)
+	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'])
 	response = r.json()['response']
 	messageCount = response['count']
 	return messageCount
@@ -23,7 +23,7 @@ def getPreviousMessage(messageId):
 
 def getAllGroupMessages(groupId):
 	parameters = {'limit' : 100}
-	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + accessToken, params=parameters)
+	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'], params=parameters)
 	response = r.json()['response']
 	totalGroupMessageCount = response['count']
 	messages = response['messages']
@@ -56,8 +56,8 @@ def getGroupMessages(groupId, inputParameters):
 		after_id = inputParameters['after_id']
 		callParameters['after_id'] = after_id
 	
-	url = 'https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + accessToken
-	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + accessToken, params=callParameters)
+	url = 'https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken']
+	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'], params=callParameters)
 	response = r.json()['response']
 	messages = response['messages']
 	return messages
