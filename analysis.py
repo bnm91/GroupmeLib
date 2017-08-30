@@ -36,6 +36,7 @@ def getFavoritedCountByUser(groupId, msgs=None, groupUserDictionary=None):
     return favoriteCounts
 
 
+
 #TODO: refactor this so is done by user_id instead of Name
 def getFavoritesGivenCountbyUser(groupId, msgs=None, groupUserDictionary=None):
     if(msgs is None):
@@ -52,6 +53,33 @@ def getFavoritesGivenCountbyUser(groupId, msgs=None, groupUserDictionary=None):
     return favoritesGivenCounts
 
 
+def getUserFavoritedBy(groupId, userId, msgs=None):
+    if(msgs is None):
+        msgs = messages.getAllGroupMessages(groupId)
+    groupUserDictionary = getAllGroupUsers(groupId, msgs)
+
+    favoritedByCounts = {}
+    for message in msgs:
+        if message['user_id'] == userId:
+            for favoriter in message['favorited_by']:
+                if(groupUserDictionary[favoriter] not in favoritedByCounts.keys()):
+                    favoritedByCounts[groupUserDictionary[favoriter]] = 0
+                favoritedByCounts[groupUserDictionary[favoriter]] += 1
+    return favoritedByCounts
+
+
+def getAllUsersFavoritedByCount(groupId, msgs=None, groupUserDictionary=None):
+    if(msgs is None):
+        msgs = messages.getAllGroupMessages(groupId)
+    if(groupUserDictionary is None):
+        groupUserDictionary = getAllGroupUsers(groupId, msgs)
+
+    favoritedByCounts = {}
+    for user in groupUserDictionary:
+        favoritedByCounts[groupUserDictionary[user]] = getUserFavoritedBy(groupId, user, msgs)
+    return favoritedByCounts
+
+
 def getAllGroupUsers(groupId, msgs=None):
     if(msgs is None):
         msgs = messages.getAllGroupMessages(groupId)
@@ -62,11 +90,23 @@ def getAllGroupUsers(groupId, msgs=None):
     return userDictionary
 
 
+def getAllGroupUsersReverse(groupId, msgs=None):
+    if(msgs is None):
+        msgs = messages.getAllGroupMessages(groupId)
+    userDictionary = {}
+    for message in msgs:
+        if(message['user_id'] not in userDictionary.keys()):
+            userDictionary[message['user_id']] = message['name']
+    return userDictionary
+
+
 #TODO: implement
 def getMessagesByUser(groupId, msgs=None):
     return 1
 
 
+#TODO: investigate why with group 4501211 there are users in this result that aren't in the groupUserDictionary
+# the issue is that Doug, Nixon, and possibly others had their first message labeled as "groupme" so it they don't have a unique name even if they do have a unique user id's
 def getMessageCountPerUser(groupId, msgs=None, groupUserDictionary=None):
     if(msgs is None):
         msgs = messages.getAllGroupMessages(groupId)
@@ -75,17 +115,28 @@ def getMessageCountPerUser(groupId, msgs=None, groupUserDictionary=None):
         
     messageCounts = {}
     for message in msgs:
-        if(groupUserDictionary[message['user_id']] not in messageCounts.keys()):
-            messageCounts[groupUserDictionary[message['user_id']]] = 0
-        messageCounts[groupUserDictionary[message['user_id']]] += 1
-    return messageCounts
+        if(message['user_id'] not in messageCounts.keys()):
+            messageCounts[message['user_id']] = 0
+        messageCounts[message['user_id']] += 1
+
+    messageCountsByName = {}
+    for key in messageCounts.keys():
+        messageCountsByName[groupUserDictionary[key]] = messageCounts[key]
+
+    return messageCountsByName
 
 
 
 
 msgs = messages.getAllGroupMessages(5954413)
-print getSelfFavoritedCountByUser(5954413, msgs)
+#users = getAllGroupUsersReverse(4501211, msgs)
+print getFavoritedCountByUser(5954413, msgs)#, users)
 
 #(13104384) SPORTS
 #(30425709) Brewgaloo
 #(5954413) WPFL
+#(4501211) Cary Krewe (OG)
+#(18020667) Blue's Krewe
+
+
+#('17421009') chapla user id
