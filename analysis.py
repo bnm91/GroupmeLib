@@ -100,10 +100,6 @@ def getAllGroupUsersReverse(groupId, msgs=None):
     return userDictionary
 
 
-#TODO: implement
-def getMessagesByUser(groupId, msgs=None):
-    return 1
-
 
 #TODO: investigate why with group 4501211 there are users in this result that aren't in the groupUserDictionary
 # the issue is that Doug, Nixon, and possibly others had their first message labeled as "groupme" so it they don't have a unique name even if they do have a unique user id's
