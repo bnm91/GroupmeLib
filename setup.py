@@ -5,7 +5,7 @@ packages = [
 ]
 
 setup(
-    name='decker',
+    name='GroupmeLib',
     version='0.0.1',
     description='Groupme library for python',
     author='Nixon Ball',
