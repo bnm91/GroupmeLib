@@ -80,6 +80,19 @@ def getAllUsersFavoritedByCount(groupId, msgs=None, groupUserDictionary=None):
     return favoritedByCounts
 
 
+##https://stackoverflow.com/questions/38218501/python-get-top-n-keys-with-value-as-dictionary
+def getMostFavoritedMessages(groupId, numberOfTopMessages, msgs=None, groupUserDictionary=None):
+    if(msgs is None):
+        msgs = messages.getAllGroupMessages(groupId)
+    if(groupUserDictionary is None):
+        groupUserDictionary = getAllGroupUsers(groupId, msgs)
+   
+    # test2 = len(msgs[0]['favorited_by'])
+    
+    mostFavoritedMessages = sorted(msgs, key=lambda x: len(x['favorited_by']), reverse=True)[:numberOfTopMessages]
+    return mostFavoritedMessages
+
+
 def getAllGroupUsers(groupId, msgs=None):
     if(msgs is None):
         msgs = messages.getAllGroupMessages(groupId)
@@ -124,9 +137,9 @@ def getMessageCountPerUser(groupId, msgs=None, groupUserDictionary=None):
 
 
 
-msgs = messages.getAllGroupMessages(5954413)
+msgs = messages.getAllGroupMessages(4501211)
 #users = getAllGroupUsersReverse(4501211, msgs)
-print getFavoritedCountByUser(5954413, msgs)#, users)
+print getMostFavoritedMessages(4501211, 10, msgs)#, users)
 
 #(13104384) SPORTS
 #(30425709) Brewgaloo
