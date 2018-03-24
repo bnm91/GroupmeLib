@@ -1,6 +1,6 @@
 import json
 import requests
-from config import config
+from groupmeLib.config import config
 
 
 #TODO: add handling for no response/bad response etc
@@ -44,7 +44,7 @@ def getAllGroupMessages(groupId):
 	r = requests.get('https://api.groupme.com/v3/groups/' + str(groupId) + '/messages?token=' + config['accessToken'], params=parameters)
 	response = r.json()['response']
 	totalGroupMessageCount = response['count']
-	print totalGroupMessageCount
+	print(totalGroupMessageCount)
 	messages = response['messages']
 	retrievedMessageCount = len(messages)
 
@@ -59,7 +59,7 @@ def getAllGroupMessages(groupId):
 			break
 		messages += retrievedMessages
 		retrievedMessageCount += len(retrievedMessages)
-		print str(retrievedMessageCount) + ' ' + str(before_id)
+		print(str(retrievedMessageCount) + ' ' + str(before_id))
 
 	return messages
 
@@ -112,4 +112,4 @@ def getGroupMessages(groupId, inputParameters):
 
 
 
-# print getAllGroupMessages(30425709)
+print(getGroupMessageCount(30425709))

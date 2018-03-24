@@ -115,7 +115,7 @@ def getAllGroupUsersReverse(groupId, msgs=None):
 
 
 #TODO: investigate why with group 4501211 there are users in this result that aren't in the groupUserDictionary
-# the issue is that Doug, Nixon, and possibly others had their first message labeled as "groupme" so it they don't have a unique name even if they do have a unique user id's
+# the issue is that Doug, Nixon, and possibly others had their first message labeled as "groupme" so if they don't have a unique name even if they do have a unique user id's
 def getMessageCountPerUser(groupId, msgs=None, groupUserDictionary=None):
     if(msgs is None):
         msgs = messages.getAllGroupMessages(groupId)
@@ -139,7 +139,7 @@ def getMessageCountPerUser(groupId, msgs=None, groupUserDictionary=None):
 
 msgs = messages.getAllGroupMessages(4501211)
 #users = getAllGroupUsersReverse(4501211, msgs)
-print getMostFavoritedMessages(4501211, 10, msgs)#, users)
+print(getMostFavoritedMessages(4501211, 10, msgs))#, users)
 
 #(13104384) SPORTS
 #(30425709) Brewgaloo

@@ -9,9 +9,9 @@ setup(
     version='0.0.1',
     description='Groupme library for python',
     author='Nixon Ball',
-    packages=packages
+    packages=packages,
     include_package_data=True,
     install_requires=[
         'requests>=2.8.1'
-    ],
+    ]
 )
